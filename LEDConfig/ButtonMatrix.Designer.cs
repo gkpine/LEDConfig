@@ -28,13 +28,25 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.btnChangeAll = new System.Windows.Forms.Button();
             this.SuspendLayout();
+            // 
+            // btnChangeAll
+            // 
+            this.btnChangeAll.Location = new System.Drawing.Point(10, 9);
+            this.btnChangeAll.Name = "btnChangeAll";
+            this.btnChangeAll.Size = new System.Drawing.Size(160, 32);
+            this.btnChangeAll.TabIndex = 0;
+            this.btnChangeAll.Text = "Change All Colours";
+            this.btnChangeAll.UseVisualStyleBackColor = true;
+            this.btnChangeAll.Click += new System.EventHandler(this.btnChangeAll_Click);
             // 
             // ButtonMatrix
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
+            this.Controls.Add(this.btnChangeAll);
             this.Name = "ButtonMatrix";
             this.Size = new System.Drawing.Size(832, 630);
             this.Load += new System.EventHandler(this.ButtonMatrix_Load);
@@ -43,5 +55,7 @@
         }
 
         #endregion
+
+        private Button btnChangeAll;
     }
 }

@@ -16,32 +16,8 @@ namespace LEDConfig
         private int _rows;
         private int _ledCount;
 
-
-        public int Rows
-        {
-            get
-            {
-                return _rows;
-            }
-            set
-            {
-                _rows = value; 
-                ClearMatrix();
-                BuildMatrix();
-            }
-        }
-        public int LEDCount { 
-        get
-            {
-                return _ledCount;
-            }
-            set
-            {
-                _ledCount = value;
-                ClearMatrix();
-                BuildMatrix();
-            }
-        }
+        public int Rows { get; set; }
+        public int LEDCount { get; set; }
 
         private int LEDsPerRow;
 
@@ -49,12 +25,11 @@ namespace LEDConfig
         {
             InitializeComponent();
             Rows = 1;
-            LEDCount = 10;
+            LEDCount = 1;
         }
 
         private void ButtonMatrix_Load(object sender, EventArgs e)
         {
-            ClearMatrix();
             BuildMatrix();
         }
 
@@ -66,8 +41,16 @@ namespace LEDConfig
             }
         }
 
-        private void BuildMatrix()
+        public void BuildMatrix(int LEDcount, int rowCount)
         {
+            this.LEDCount = LEDcount;
+            this.Rows = rowCount;
+            BuildMatrix();
+        }
+
+        public void BuildMatrix()
+        {
+            ClearMatrix();
             LEDsPerRow = LEDCount / Rows;
             int ledCounter = 1;
             for (int row = 0; row < Rows; row++)
@@ -78,7 +61,8 @@ namespace LEDConfig
                     this.Controls.Add(btn);
                     btn.Size = new Size(32, 32);
                     btn.Name = "button" + row + "_" + ledCounter.ToString();
-                    btn.Location = new Point(led * 32, row * 32);
+                    btn.Location = new Point(led * 32, row * 32 + 35);
+                    btn.Click += Btn_Click;
                     ledCounter++;
                 }
 
@@ -87,9 +71,34 @@ namespace LEDConfig
                 rowBtn.AutoSize = true;
                 rowBtn.Name = "btnRowColour_" + row;
                 rowBtn.Text = "Change Row Colour";
-                rowBtn.Location = new Point(LEDsPerRow * 32 + 15, row * 32);
+                rowBtn.Location = new Point(LEDsPerRow * 32 + 15, row * 32 + 35);
+                rowBtn.Click += RowBtn_Click;
 
             }
+        }
+
+        private void Btn_Click(object? sender, EventArgs e)
+        {
+            if (sender != null)
+            {
+                ColorDialog cd = new ColorDialog();
+                if (cd.ShowDialog() == DialogResult.Cancel) return;
+                Control[] findResult = this.Controls.Find(((Button)sender).Name, false);
+                if (findResult.Length > 0) ((Button)findResult[0]).BackColor = cd.Color;
+            }
+        }
+
+        private void RowBtn_Click(object? sender, EventArgs e)
+        {
+            if (sender != null)
+            {
+                int row = Convert.ToInt32(((Button)sender).Name.ToString().Replace("btnRowColour_", ""));
+                ColorDialog cd = new ColorDialog();
+                if (cd.ShowDialog() == DialogResult.Cancel) return;
+                cd.ShowDialog();
+                SetColour(cd.Color, row);
+            }
+
         }
 
         public void SetColour(Color c, int row)
@@ -105,18 +114,19 @@ namespace LEDConfig
             }
         }
 
-        //public void SetColour(Color c, int buttonIndex)
-        //{
-        //    List<Button> btnList = this.Controls.OfType<Button>().ToList().Where(b => b.Name.StartsWith("button") && b.Name.Replace("button", "").Split("_")[1].Trim() == buttonIndex.ToString()).ToList();
-        //    btnList[0].BackColor = c;
-        //}
-
         public void SetColour(Color c)
         {
             foreach(Button b in this.Controls.OfType<Button>().ToList())
             {
                 b.BackColor = c;
             }
+        }
+
+        private void btnChangeAll_Click(object sender, EventArgs e)
+        {
+            ColorDialog cd = new ColorDialog();
+            if (cd.ShowDialog() == DialogResult.Cancel) return;
+            SetColour(cd.Color);
         }
     }
 }

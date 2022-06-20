@@ -78,7 +78,7 @@ namespace LEDConfig
                     btn.Name = "button" + row + "_" + ledCounter.ToString();
                     btn.Location = new Point(10 + led * 32, row * 32 + 45);
                     btn.Click += Btn_Click;
-                    btn.BackColor = System.Drawing.ColorTranslator.FromHtml("#FFFFFF");
+                    btn.BackColor = ColorTranslator.FromHtml("#FFFFFF");
                     ledCounter++;
 
                     if (ledCounter > LEDCount) break;
@@ -100,7 +100,7 @@ namespace LEDConfig
             layout.Clear();
             foreach (Button b in this.Controls.OfType<Button>().ToList())
             {
-                if (b.Name.StartsWith("button") || b.Name.StartsWith("btnRowColour_")) b.BackColor = System.Drawing.ColorTranslator.FromHtml("#FFFFFF");
+                if (b.Name.StartsWith("button") || b.Name.StartsWith("btnRowColour_")) b.BackColor = ColorTranslator.FromHtml("#FFFFFF");
             }
         }
 
@@ -110,20 +110,24 @@ namespace LEDConfig
             {
                 Control[] findResult = this.Controls.Find(((Button)sender).Name, false);
                 if (findResult.Length > 0) 
-                { 
-                    ((Button)findResult[0]).BackColor = indivColour;
+                {
+                    Color colourToLog = indivColour;
+                    if (((Button)findResult[0]).BackColor == indivColour) colourToLog = ColorTranslator.FromHtml("#FFFFFF");
+
+                    ((Button)findResult[0]).BackColor = colourToLog;
+
                     int index = Convert.ToInt32(((Button)findResult[0]).Name.Split("_")[1]);
                     HashSet<int>? existing = null;
-                    if (layout.TryGetValue(cd.Color, out existing))
+                    if (layout.TryGetValue(colourToLog, out existing))
                     {
                         existing.Add(index);
-                        layout[indivColour] = existing;
+                        layout[colourToLog] = existing;
                     }
                     else
                     {
                         existing = new();
                         existing.Add(index);
-                        layout.Add(indivColour, existing);
+                        layout.Add(colourToLog, existing);
                     }
                 } 
             }

@@ -1,6 +1,6 @@
 ﻿namespace LEDConfig
 {
-    partial class Form1
+    partial class frmMain
     {
         /// <summary>
         ///  Required designer variable.
@@ -31,11 +31,13 @@
             this.buttonMatrix = new LEDConfig.ButtonMatrix();
             this.panMatrix = new System.Windows.Forms.Panel();
             this.panControls = new System.Windows.Forms.Panel();
-            this.txtNumLeds = new System.Windows.Forms.TextBox();
-            this.txtRows = new System.Windows.Forms.TextBox();
-            this.btnBuild = new System.Windows.Forms.Button();
-            this.txtVarName = new System.Windows.Forms.TextBox();
+            this.btnGenerate = new System.Windows.Forms.Button();
+            this.txtIndex = new System.Windows.Forms.TextBox();
             this.txtCodeGen = new System.Windows.Forms.TextBox();
+            this.txtVarName = new System.Windows.Forms.TextBox();
+            this.btnBuild = new System.Windows.Forms.Button();
+            this.txtRows = new System.Windows.Forms.TextBox();
+            this.txtNumLeds = new System.Windows.Forms.TextBox();
             this.panMatrix.SuspendLayout();
             this.panControls.SuspendLayout();
             this.SuspendLayout();
@@ -63,6 +65,8 @@
             // panControls
             // 
             this.panControls.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panControls.Controls.Add(this.btnGenerate);
+            this.panControls.Controls.Add(this.txtIndex);
             this.panControls.Controls.Add(this.txtCodeGen);
             this.panControls.Controls.Add(this.txtVarName);
             this.panControls.Controls.Add(this.btnBuild);
@@ -74,21 +78,43 @@
             this.panControls.Size = new System.Drawing.Size(200, 566);
             this.panControls.TabIndex = 2;
             // 
-            // txtNumLeds
+            // btnGenerate
             // 
-            this.txtNumLeds.Location = new System.Drawing.Point(5, 3);
-            this.txtNumLeds.Name = "txtNumLeds";
-            this.txtNumLeds.PlaceholderText = "# of LEDs";
-            this.txtNumLeds.Size = new System.Drawing.Size(182, 23);
-            this.txtNumLeds.TabIndex = 0;
+            this.btnGenerate.Location = new System.Drawing.Point(5, 156);
+            this.btnGenerate.Name = "btnGenerate";
+            this.btnGenerate.Size = new System.Drawing.Size(100, 23);
+            this.btnGenerate.TabIndex = 6;
+            this.btnGenerate.Text = "Generate Code";
+            this.btnGenerate.UseVisualStyleBackColor = true;
+            this.btnGenerate.Click += new System.EventHandler(this.btnGenerate_Click);
             // 
-            // txtRows
+            // txtIndex
             // 
-            this.txtRows.Location = new System.Drawing.Point(5, 32);
-            this.txtRows.Name = "txtRows";
-            this.txtRows.PlaceholderText = "# of Rows";
-            this.txtRows.Size = new System.Drawing.Size(182, 23);
-            this.txtRows.TabIndex = 1;
+            this.txtIndex.Location = new System.Drawing.Point(5, 119);
+            this.txtIndex.Name = "txtIndex";
+            this.txtIndex.PlaceholderText = "LED Index Variable Name";
+            this.txtIndex.Size = new System.Drawing.Size(182, 23);
+            this.txtIndex.TabIndex = 5;
+            // 
+            // txtCodeGen
+            // 
+            this.txtCodeGen.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.txtCodeGen.Location = new System.Drawing.Point(5, 185);
+            this.txtCodeGen.Multiline = true;
+            this.txtCodeGen.Name = "txtCodeGen";
+            this.txtCodeGen.ReadOnly = true;
+            this.txtCodeGen.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.txtCodeGen.Size = new System.Drawing.Size(182, 374);
+            this.txtCodeGen.TabIndex = 4;
+            this.txtCodeGen.WordWrap = false;
+            // 
+            // txtVarName
+            // 
+            this.txtVarName.Location = new System.Drawing.Point(5, 90);
+            this.txtVarName.Name = "txtVarName";
+            this.txtVarName.PlaceholderText = "LED Variable Name";
+            this.txtVarName.Size = new System.Drawing.Size(182, 23);
+            this.txtVarName.TabIndex = 3;
             // 
             // btnBuild
             // 
@@ -98,23 +124,25 @@
             this.btnBuild.TabIndex = 2;
             this.btnBuild.Text = "Build";
             this.btnBuild.UseVisualStyleBackColor = true;
+            this.btnBuild.Click += new System.EventHandler(this.btnBuild_Click);
             // 
-            // txtVarName
+            // txtRows
             // 
-            this.txtVarName.Location = new System.Drawing.Point(5, 116);
-            this.txtVarName.Name = "txtVarName";
-            this.txtVarName.PlaceholderText = "LED Variable Name";
-            this.txtVarName.Size = new System.Drawing.Size(182, 23);
-            this.txtVarName.TabIndex = 3;
+            this.txtRows.Location = new System.Drawing.Point(5, 32);
+            this.txtRows.Name = "txtRows";
+            this.txtRows.PlaceholderText = "# of Rows";
+            this.txtRows.Size = new System.Drawing.Size(182, 23);
+            this.txtRows.TabIndex = 1;
+            this.txtRows.TextChanged += new System.EventHandler(this.txtRows_TextChanged);
             // 
-            // txtCodeGen
+            // txtNumLeds
             // 
-            this.txtCodeGen.Location = new System.Drawing.Point(5, 145);
-            this.txtCodeGen.Multiline = true;
-            this.txtCodeGen.Name = "txtCodeGen";
-            this.txtCodeGen.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtCodeGen.Size = new System.Drawing.Size(182, 411);
-            this.txtCodeGen.TabIndex = 4;
+            this.txtNumLeds.Location = new System.Drawing.Point(5, 3);
+            this.txtNumLeds.Name = "txtNumLeds";
+            this.txtNumLeds.PlaceholderText = "# of LEDs";
+            this.txtNumLeds.Size = new System.Drawing.Size(182, 23);
+            this.txtNumLeds.TabIndex = 0;
+            this.txtNumLeds.TextChanged += new System.EventHandler(this.txtNumLeds_TextChanged);
             // 
             // Form1
             // 
@@ -143,5 +171,7 @@
         private Button btnBuild;
         private TextBox txtRows;
         private TextBox txtNumLeds;
+        private Button btnGenerate;
+        private TextBox txtIndex;
     }
 }

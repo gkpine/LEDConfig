@@ -94,7 +94,7 @@
             this.txtIndex.Name = "txtIndex";
             this.txtIndex.PlaceholderText = "LED Index Variable Name";
             this.txtIndex.Size = new System.Drawing.Size(182, 23);
-            this.txtIndex.TabIndex = 5;
+            this.txtIndex.TabIndex = 3;
             // 
             // txtCodeGen
             // 
@@ -114,14 +114,14 @@
             this.txtVarName.Name = "txtVarName";
             this.txtVarName.PlaceholderText = "LED Variable Name";
             this.txtVarName.Size = new System.Drawing.Size(182, 23);
-            this.txtVarName.TabIndex = 3;
+            this.txtVarName.TabIndex = 2;
             // 
             // btnBuild
             // 
             this.btnBuild.Location = new System.Drawing.Point(5, 61);
             this.btnBuild.Name = "btnBuild";
             this.btnBuild.Size = new System.Drawing.Size(75, 23);
-            this.btnBuild.TabIndex = 2;
+            this.btnBuild.TabIndex = 5;
             this.btnBuild.Text = "Build";
             this.btnBuild.UseVisualStyleBackColor = true;
             this.btnBuild.Click += new System.EventHandler(this.btnBuild_Click);
@@ -137,21 +137,21 @@
             // 
             // txtNumLeds
             // 
-            this.txtNumLeds.Location = new System.Drawing.Point(5, 3);
+            this.txtNumLeds.Location = new System.Drawing.Point(5, 4);
             this.txtNumLeds.Name = "txtNumLeds";
             this.txtNumLeds.PlaceholderText = "# of LEDs";
             this.txtNumLeds.Size = new System.Drawing.Size(182, 23);
             this.txtNumLeds.TabIndex = 0;
             this.txtNumLeds.TextChanged += new System.EventHandler(this.txtNumLeds_TextChanged);
             // 
-            // Form1
+            // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1054, 566);
             this.Controls.Add(this.panMatrix);
             this.Controls.Add(this.panControls);
-            this.Name = "Form1";
+            this.Name = "frmMain";
             this.Text = "LEDConfig";
             this.panMatrix.ResumeLayout(false);
             this.panMatrix.PerformLayout();

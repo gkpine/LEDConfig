@@ -67,7 +67,7 @@ namespace LEDConfig
 
             if (LEDsPerRow % 1 != 0) LEDsPerRow = (float)Math.Ceiling(LEDsPerRow);
 
-            int ledCounter = 1;
+            int ledCounter = 0;
             for (int row = 0; row < Rows; row++)
             {
                 for (int led = 0; led < LEDsPerRow; led++)
@@ -81,7 +81,7 @@ namespace LEDConfig
                     btn.BackColor = ColorTranslator.FromHtml("#FFFFFF");
                     ledCounter++;
 
-                    if (ledCounter > LEDCount) break;
+                    if (ledCounter >= LEDCount) break;
                 }
 
                 Button rowBtn = new Button();
@@ -176,7 +176,7 @@ namespace LEDConfig
             }
 
             layout.Clear();
-            layout.Add(c, Enumerable.Range(0, LEDCount).ToHashSet());
+            layout.Add(c, Enumerable.Range(0, LEDCount - 1).ToHashSet());
         }
 
         private void btnChangeAll_Click(object sender, EventArgs e)
@@ -194,17 +194,17 @@ namespace LEDConfig
                 {
                     code += Environment.NewLine + "\tcase " + led.ToString() + ":";
                 }
-                code += Environment.NewLine + "\t\t" + ledVariableName + "[" + ledIndexVariableName + "] = " + ColorToHex(kvp.Key) + ";";
+                code += Environment.NewLine + "\t\t" + ledVariableName + "[" + ledIndexVariableName + "] = " + ColorToHex(kvp.Key, true) + ";";
                 code += Environment.NewLine + "\t\tbreak;";
             }
 
-            code += Environment.NewLine + "}";
+            code += Environment.NewLine + "\tdefault: " + Environment.NewLine + "\t\tbreak;" + Environment.NewLine + "}";
             return code;
         }
 
-        private string ColorToHex(Color c)
+        private string ColorToHex(Color c, bool useZeroX)
         {
-            return "#" + c.R.ToString("X2") + c.G.ToString("X2") + c.B.ToString("X2");
+            return (useZeroX ? "0x" : "#") + c.R.ToString("X2") + c.G.ToString("X2") + c.B.ToString("X2");
         }
 
         private void btnClearColours_Click(object sender, EventArgs e)

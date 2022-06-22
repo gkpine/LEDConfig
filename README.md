@@ -3,4 +3,4 @@ This is a simple C# GUI tool for generating switch statements that  correspond t
 
 LED colours can be configured individually, by row, or completely. At the moment configurations aren't saved between sessions, but the generated switch statement can always be copied elsewhere for later reference.
 
-I built this tool for working on a large LED grid for my MSc thesis work.
+![screenshot](https://i.postimg.cc/GpmNtybV/Untitled.png)

@@ -81,5 +81,10 @@ namespace LEDConfig
 
             txtCodeGen.Text = buttonMatrix.GenerateCode(txtIndex.Text, txtVarName.Text);
         }
+
+        private void btnCopy_Click(object sender, EventArgs e)
+        {
+            Clipboard.SetText(txtCodeGen.Text);
+        }
     }
 }

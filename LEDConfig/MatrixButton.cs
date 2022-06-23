@@ -22,7 +22,7 @@ namespace LEDConfig
             InitializeComponent();
             this.BackColor = Color.Black;
             this.Size = new Size(32, 32);
-            this.LEDNumber = 1;
+            this.LEDNumber = 0;
         }
     }
 }

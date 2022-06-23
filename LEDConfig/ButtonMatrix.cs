@@ -64,7 +64,18 @@ namespace LEDConfig
             {
                 for (int row = 0; row < matrix.GetLength(1); row++)
                 {
-                    ledCounter = chkInverse.Checked ? (LEDCount - 1) - ((ledsPerRow * row) + col) : (ledsPerRow * row) + col;
+                    ledCounter = ((ledsPerRow * row) + col);
+                    if (!chkInverse.Checked && (row + 1) % 2 == 0)
+                    {
+                        ledCounter = ((ledsPerRow * (row+1)) - col) -1;
+                    } 
+                    else if (chkInverse.Checked && (row + 1) % 2 != 0)
+                    {
+                        ledCounter = ((ledsPerRow * (row + 1)) - col) - 1;
+                    }
+
+                    if (chkInverse.Checked) ledCounter = (LEDCount - 1) - ledCounter;
+                    
                     if (col * row > this.LEDCount) break;
                     matrix[col, row].Location = new Point(10 + col * 32, row * 32 + (this.Height / 10));
                     matrix[col, row].Name = "led" + ledCounter.ToString();

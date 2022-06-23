@@ -12,124 +12,114 @@ namespace LEDConfig
 {
     public partial class ButtonMatrix : UserControl
     {
-        public int Rows { get; set; }
+        private MatrixButton[,] matrix;
+        public int RowCount { get; set; }
         public int LEDCount { get; set; }
 
-        private float LEDsPerRow;
         private ColorDialog cd = new();
 
-        private Dictionary<Color, HashSet<int>> layout = new();
-
-        private Color indivColour;
+        private Color indivColour = Color.Empty;
 
         public ButtonMatrix()
         {
             InitializeComponent();
-            Rows = 1;
+            matrix = new MatrixButton[1,1];
+            RowCount = 1;
             LEDCount = 1;
             lblInvalid.Visible = false;
         }
 
         private void ButtonMatrix_Load(object sender, EventArgs e)
         {
-            BuildMatrix();
+            DrawMatrix(this.LEDCount, this.RowCount);
         }
 
-        private void ClearMatrix()
+        public void DrawMatrix(int ledCount, int rowCount)
         {
-            foreach (Button b in this.Controls.OfType<Button>().ToList())
+            this.LEDCount = ledCount;
+            this.RowCount = rowCount;
+
+            int ledsPerRow = (int)Math.Ceiling((float)this.LEDCount / (float)this.RowCount);
+            matrix = new MatrixButton[ledsPerRow, rowCount];
+
+            for(int col = 0; col < ledsPerRow; col++)
             {
-                if (b.Name.StartsWith("button") || b.Name.StartsWith("btnRowColour_")) b.Dispose();
-            }
-
-            lblInvalid.Visible = false;
-            layout.Clear();
-        }
-
-        public void BuildMatrix(int LEDcount, int rowCount)
-        {
-            this.LEDCount = LEDcount;
-            this.Rows = rowCount;
-            BuildMatrix();
-        }
-
-        public void BuildMatrix()
-        {
-            ClearMatrix();
-
-            LEDsPerRow = (float)LEDCount / (float)Rows;
-            if (LEDsPerRow < 1)
-            {
-                lblInvalid.Visible = true;
-                LEDsPerRow = 0;
-                return;
-            }
-
-            if (LEDsPerRow % 1 != 0) LEDsPerRow = (float)Math.Ceiling(LEDsPerRow);
-
-            int ledCounter = 0;
-            for (int row = 0; row < Rows; row++)
-            {
-                for (int led = 0; led < LEDsPerRow; led++)
+                for (int row = 0; row < rowCount; row++)
                 {
-                    Button btn = new Button();
-                    this.Controls.Add(btn);
-                    btn.Size = new Size(32, 32);
-                    btn.Name = "button" + row + "_" + ledCounter.ToString();
-                    btn.Location = new Point(10 + led * 32, row * 32 + 45);
-                    btn.Click += Btn_Click;
-                    btn.BackColor = ColorTranslator.FromHtml("#FFFFFF");
-                    ledCounter++;
-
-                    if (ledCounter >= LEDCount) break;
+                    matrix[col, row] = new MatrixButton();
                 }
+            }
+            DrawMatrix();
+        }
 
-                Button rowBtn = new Button();
-                this.Controls.Add(rowBtn);
-                rowBtn.AutoSize = true;
-                rowBtn.Name = "btnRowColour_" + row;
-                rowBtn.Text = "Change Row Colour";
-                rowBtn.Location = new Point((int)LEDsPerRow * 32 + 15, row * 32 + 45);
-                rowBtn.Click += RowBtn_Click;
+        private void DrawMatrix()
+        {
+            this.Controls.OfType<Button>().ToList().Where(b => b.Name.StartsWith("btnChangeRow")).ToList().ForEach(b => b.Dispose());
+            this.Controls.OfType<MatrixButton>().ToList().ForEach(b => b.Dispose());
 
+            int ledsPerRow = (int)Math.Ceiling((float)this.LEDCount / (float)this.RowCount);
+            int ledCounter = 0;
+
+            for (int col = 0; col < matrix.GetLength(0); col++)
+            {
+                for (int row = 0; row < matrix.GetLength(1); row++)
+                {
+                    ledCounter = chkInverse.Checked ? (LEDCount - 1) - ((ledsPerRow * row) + col) : (ledsPerRow * row) + col;
+                    if (col * row > this.LEDCount) break;
+                    matrix[col, row].Location = new Point(10 + col * 32, row * 32 + (this.Height / 10));
+                    matrix[col, row].Name = "led" + ledCounter.ToString();
+                    matrix[col, row].Row = row;
+                    matrix[col, row].Column = col;
+                    matrix[col, row].LEDNumber = ledCounter;
+                    matrix[col, row].Click += MatrixButton_Click;
+                    matrix[col, row].ForeColor = Color.White;
+                    matrix[col, row].Text = matrix[col, row].LEDNumber.ToString();
+                    matrix[col, row].Font = new Font(FontFamily.GenericSerif, 4);
+                    this.Controls.Add(matrix[col, row]);
+
+                    if (col == matrix.GetLength(0) - 1)
+                    {
+                        Button changeRow = new Button();
+                        changeRow.Name = "btnChangeRow" + row;
+                        changeRow.Text = "Change Row Colour";
+                        changeRow.AutoSize = true;
+                        changeRow.Location = new Point((10 + col * 32) + 45, row * 32 + (this.Height / 10));
+                        changeRow.Click += RowBtn_Click;
+                        this.Controls.Add(changeRow);
+                    }
+                }
+                
             }
         }
 
         public void ClearColours()
         {
-            layout.Clear();
-            foreach (Button b in this.Controls.OfType<Button>().ToList())
+            foreach (MatrixButton b in this.Controls.OfType<MatrixButton>().ToList())
             {
-                if (b.Name.StartsWith("button") || b.Name.StartsWith("btnRowColour_")) b.BackColor = ColorTranslator.FromHtml("#FFFFFF");
+                b.BackColor = Color.Black;
+                matrix[b.Column, b.Row] = b;
             }
         }
 
-        private void Btn_Click(object? sender, EventArgs e)
+        private void MatrixButton_Click(object? sender, EventArgs e)
         {
             if (sender != null)
             {
-                Control[] findResult = this.Controls.Find(((Button)sender).Name, false);
-                if (findResult.Length > 0) 
+                MatrixButton mb = (MatrixButton)sender;
+                if (indivColour != Color.Empty && mb.BackColor != indivColour)
                 {
-                    Color colourToLog = indivColour;
-                    if (((Button)findResult[0]).BackColor == indivColour) colourToLog = ColorTranslator.FromHtml("#FFFFFF");
-
-                    ((Button)findResult[0]).BackColor = colourToLog;
-
-                    int index = Convert.ToInt32(((Button)findResult[0]).Name.Split("_")[1]);
-                    HashSet<int>? existing = null;
-                    if (layout.TryGetValue(colourToLog, out existing))
-                    {
-                        existing.Add(index);
-                        layout[colourToLog] = existing;
-                    }
-                    else
-                    {
-                        existing = new();
-                        existing.Add(index);
-                        layout.Add(colourToLog, existing);
-                    }
-                } 
+                    mb.BackColor = indivColour;
+                    matrix[mb.Column, mb.Row] = mb;
+                }
+                else if (mb.BackColor == indivColour)
+                {
+                    mb.BackColor = Color.Black;
+                    matrix[mb.Column, mb.Row] = mb;
+                }
+                else
+                {
+                    MessageBox.Show(string.Format("Row: {0}, Col: {1}", mb.Row, mb.Column));
+                }
             }
         }
 
@@ -137,7 +127,7 @@ namespace LEDConfig
         {
             if (sender != null)
             {
-                int row = Convert.ToInt32(((Button)sender).Name.ToString().Replace("btnRowColour_", ""));
+                int row = Convert.ToInt32(((Button)sender).Name.ToString().Replace("btnChangeRow", ""));
                 if (cd.ShowDialog() == DialogResult.Cancel) return;
                 SetColour(cd.Color, row);
             }
@@ -145,38 +135,21 @@ namespace LEDConfig
 
         public void SetColour(Color c, int row)
         {
-            var rowBtns = this.Controls.OfType<Button>().ToList().Where(b =>
-                b.Name.StartsWith("button") && b.Name.Replace("button", "").Split("_")[0].Trim() == row.ToString()
-            );
-
-            foreach(Button b in rowBtns)
+            List<MatrixButton> buttons = this.Controls.OfType<MatrixButton>().ToList().Where(b => b.Row == row).ToList();
+            foreach(MatrixButton b in buttons)
             {
                 b.BackColor = c;
-                int index = Convert.ToInt32(b.Name.Split("_")[1]);
-                HashSet<int>? existing = null;
-                if (layout.TryGetValue(c, out existing)) 
-                {
-                    existing.Add(index);
-                    layout[c] = existing;
-                }
-                else
-                {
-                    existing = new();
-                    existing.Add(index);
-                    layout.Add(c, existing);
-                }
+                matrix[b.Column, b.Row] = b;
             }
         }
 
         public void SetColour(Color c)
         {
-            foreach(Button b in this.Controls.OfType<Button>().ToList())
+            foreach(MatrixButton b in this.Controls.OfType<MatrixButton>().ToList())
             {
-                if (b.Name.StartsWith("button")) b.BackColor = c;
+                b.BackColor = c;
+                matrix[b.Column, b.Row] = b;
             }
-
-            layout.Clear();
-            layout.Add(c, Enumerable.Range(0, LEDCount - 1).ToHashSet());
         }
 
         private void btnChangeAll_Click(object sender, EventArgs e)
@@ -187,8 +160,27 @@ namespace LEDConfig
 
         public string GenerateCode(string ledIndexVariableName, string ledVariableName)
         {
-            string code = "switch(" + ledIndexVariableName + ") {";
-            foreach (KeyValuePair<Color, HashSet<int>> kvp in layout)
+            Dictionary<Color, SortedSet<int>> layout = new();
+            foreach(MatrixButton b in this.Controls.OfType<MatrixButton>().ToList())
+            {
+                SortedSet<int>? existing;
+                if (layout.TryGetValue(b.BackColor, out existing))
+                {
+                    existing.Add(b.LEDNumber);
+                    
+                    layout[b.BackColor] = existing;
+                }
+                else
+                {
+                    existing = new();
+                    existing.Add(b.LEDNumber);
+                    layout.Add(b.BackColor, existing);
+                }
+            }
+
+
+            string code = "switch (" + ledIndexVariableName + ") {";
+            foreach (KeyValuePair<Color, SortedSet<int>> kvp in layout)
             {
                 foreach (int led in kvp.Value)
                 {
@@ -217,6 +209,11 @@ namespace LEDConfig
             if (cd.ShowDialog() == DialogResult.Cancel) return;
             btnIndiv.BackColor = cd.Color;
             indivColour = cd.Color;
+        }
+
+        private void chkInverse_CheckedChanged(object sender, EventArgs e)
+        {
+            DrawMatrix(LEDCount, RowCount);
         }
     }
 }

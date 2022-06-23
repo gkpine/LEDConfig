@@ -38,7 +38,7 @@ namespace LEDConfig
             int rowCount;
             if (!int.TryParse(txtNumLeds.Text, out ledCount) || !int.TryParse(txtRows.Text, out rowCount)) return;
 
-            buttonMatrix.BuildMatrix(ledCount, rowCount);
+            buttonMatrix.DrawMatrix(ledCount, rowCount);
         }
 
         private void txtRows_TextChanged(object sender, EventArgs e)

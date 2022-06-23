@@ -47,9 +47,10 @@
             this.buttonMatrix.AutoSize = true;
             this.buttonMatrix.LEDCount = 1;
             this.buttonMatrix.Location = new System.Drawing.Point(0, 0);
+            this.buttonMatrix.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
             this.buttonMatrix.Name = "buttonMatrix";
-            this.buttonMatrix.Rows = 1;
-            this.buttonMatrix.Size = new System.Drawing.Size(813, 555);
+            this.buttonMatrix.RowCount = 1;
+            this.buttonMatrix.Size = new System.Drawing.Size(1161, 925);
             this.buttonMatrix.TabIndex = 0;
             // 
             // panMatrix
@@ -58,8 +59,9 @@
             this.panMatrix.Controls.Add(this.buttonMatrix);
             this.panMatrix.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panMatrix.Location = new System.Drawing.Point(0, 0);
+            this.panMatrix.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.panMatrix.Name = "panMatrix";
-            this.panMatrix.Size = new System.Drawing.Size(854, 566);
+            this.panMatrix.Size = new System.Drawing.Size(1221, 943);
             this.panMatrix.TabIndex = 1;
             // 
             // panControls
@@ -73,16 +75,18 @@
             this.panControls.Controls.Add(this.txtRows);
             this.panControls.Controls.Add(this.txtNumLeds);
             this.panControls.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panControls.Location = new System.Drawing.Point(854, 0);
+            this.panControls.Location = new System.Drawing.Point(1221, 0);
+            this.panControls.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.panControls.Name = "panControls";
-            this.panControls.Size = new System.Drawing.Size(200, 566);
+            this.panControls.Size = new System.Drawing.Size(285, 943);
             this.panControls.TabIndex = 2;
             // 
             // btnGenerate
             // 
-            this.btnGenerate.Location = new System.Drawing.Point(5, 156);
+            this.btnGenerate.Location = new System.Drawing.Point(7, 260);
+            this.btnGenerate.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnGenerate.Name = "btnGenerate";
-            this.btnGenerate.Size = new System.Drawing.Size(100, 23);
+            this.btnGenerate.Size = new System.Drawing.Size(143, 38);
             this.btnGenerate.TabIndex = 6;
             this.btnGenerate.Text = "Generate Code";
             this.btnGenerate.UseVisualStyleBackColor = true;
@@ -90,37 +94,41 @@
             // 
             // txtIndex
             // 
-            this.txtIndex.Location = new System.Drawing.Point(5, 119);
+            this.txtIndex.Location = new System.Drawing.Point(7, 198);
+            this.txtIndex.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtIndex.Name = "txtIndex";
             this.txtIndex.PlaceholderText = "LED Index Variable Name";
-            this.txtIndex.Size = new System.Drawing.Size(182, 23);
+            this.txtIndex.Size = new System.Drawing.Size(258, 31);
             this.txtIndex.TabIndex = 3;
             // 
             // txtCodeGen
             // 
             this.txtCodeGen.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.txtCodeGen.Location = new System.Drawing.Point(5, 185);
+            this.txtCodeGen.Location = new System.Drawing.Point(7, 308);
+            this.txtCodeGen.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtCodeGen.Multiline = true;
             this.txtCodeGen.Name = "txtCodeGen";
             this.txtCodeGen.ReadOnly = true;
             this.txtCodeGen.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtCodeGen.Size = new System.Drawing.Size(182, 374);
+            this.txtCodeGen.Size = new System.Drawing.Size(258, 621);
             this.txtCodeGen.TabIndex = 4;
             this.txtCodeGen.WordWrap = false;
             // 
             // txtVarName
             // 
-            this.txtVarName.Location = new System.Drawing.Point(5, 90);
+            this.txtVarName.Location = new System.Drawing.Point(7, 150);
+            this.txtVarName.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtVarName.Name = "txtVarName";
             this.txtVarName.PlaceholderText = "LED Variable Name";
-            this.txtVarName.Size = new System.Drawing.Size(182, 23);
+            this.txtVarName.Size = new System.Drawing.Size(258, 31);
             this.txtVarName.TabIndex = 2;
             // 
             // btnBuild
             // 
-            this.btnBuild.Location = new System.Drawing.Point(5, 61);
+            this.btnBuild.Location = new System.Drawing.Point(7, 102);
+            this.btnBuild.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnBuild.Name = "btnBuild";
-            this.btnBuild.Size = new System.Drawing.Size(75, 23);
+            this.btnBuild.Size = new System.Drawing.Size(107, 38);
             this.btnBuild.TabIndex = 5;
             this.btnBuild.Text = "Build";
             this.btnBuild.UseVisualStyleBackColor = true;
@@ -128,29 +136,32 @@
             // 
             // txtRows
             // 
-            this.txtRows.Location = new System.Drawing.Point(5, 32);
+            this.txtRows.Location = new System.Drawing.Point(7, 53);
+            this.txtRows.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtRows.Name = "txtRows";
             this.txtRows.PlaceholderText = "# of Rows";
-            this.txtRows.Size = new System.Drawing.Size(182, 23);
+            this.txtRows.Size = new System.Drawing.Size(258, 31);
             this.txtRows.TabIndex = 1;
             this.txtRows.TextChanged += new System.EventHandler(this.txtRows_TextChanged);
             // 
             // txtNumLeds
             // 
-            this.txtNumLeds.Location = new System.Drawing.Point(5, 4);
+            this.txtNumLeds.Location = new System.Drawing.Point(7, 7);
+            this.txtNumLeds.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtNumLeds.Name = "txtNumLeds";
             this.txtNumLeds.PlaceholderText = "# of LEDs";
-            this.txtNumLeds.Size = new System.Drawing.Size(182, 23);
+            this.txtNumLeds.Size = new System.Drawing.Size(258, 31);
             this.txtNumLeds.TabIndex = 0;
             this.txtNumLeds.TextChanged += new System.EventHandler(this.txtNumLeds_TextChanged);
             // 
             // frmMain
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1054, 566);
+            this.ClientSize = new System.Drawing.Size(1506, 943);
             this.Controls.Add(this.panMatrix);
             this.Controls.Add(this.panControls);
+            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "frmMain";
             this.Text = "LEDConfig";
             this.panMatrix.ResumeLayout(false);
